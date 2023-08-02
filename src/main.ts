@@ -4,7 +4,7 @@ import { FileMod, changedFiles, getDiffPaths, fileModsToPaths, fileModsByStatus 
 
 async function run(): Promise<void> {
   try {
-    const ghToken = core.getInput('github-token');
+    const ghToken = core.getInput('github-token', {required: true, trimWhitespace: true});
     const gh = github.getOctokit(ghToken)
     const allChangedFiles: FileMod[] = await getDiffPaths(gh, github.context)
     

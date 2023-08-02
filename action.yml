@@ -1,6 +1,9 @@
 name: 'Changed Files'
 description: 'A fast way to get changed files github action'
 inputs:
+  github-token:
+    description: "The github token, for the most part you can just use ${{ secrets.GITHUB_TOKEN }}"
+    required: true
   ignore_file_patterns:
     description: "a newline separated list of regex paths to ignore"
     required: false

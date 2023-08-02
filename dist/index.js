@@ -164,7 +164,7 @@ const changed_files_1 = __nccwpck_require__(6503);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const ghToken = core.getInput('github-token');
+            const ghToken = core.getInput('github-token', { required: true, trimWhitespace: true });
             const gh = github.getOctokit(ghToken);
             const allChangedFiles = yield (0, changed_files_1.getDiffPaths)(gh, github.context);
             const separator = core.getInput('separator', { required: true, trimWhitespace: false });
