@@ -28,27 +28,27 @@ class FileMod {
 }
 exports.FileMod = FileMod;
 function fileModsByStatus(files, status) {
-    return files.filter((f) => f.status == status);
+    return files.filter(f => f.status === status);
 }
 exports.fileModsByStatus = fileModsByStatus;
 function fileModsToPaths(files) {
-    return files.map((f) => f.filename);
+    return files.map(f => f.filename);
 }
 exports.fileModsToPaths = fileModsToPaths;
 function changedFiles(onlyFocusPatterns, ignorePatterns, filterByStatus, allChangedFiles) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise(resolve => {
-            var results = allChangedFiles;
+            let results = allChangedFiles;
             if (filterByStatus.length > 0) {
-                results = results.filter((f) => {
+                results = results.filter(f => {
                     return filterByStatus.includes(f.status);
                 });
             }
             if (onlyFocusPatterns.length > 0) {
                 // filter only changed patterns
-                results = results.filter((f) => {
-                    if (onlyFocusPatterns.find((p) => {
-                        var r = new RegExp(p);
+                results = results.filter(f => {
+                    if (onlyFocusPatterns.find(p => {
+                        const r = new RegExp(p);
                         return r.test(f.filename);
                     })) {
                         return true;
@@ -58,9 +58,9 @@ function changedFiles(onlyFocusPatterns, ignorePatterns, filterByStatus, allChan
             }
             if (ignorePatterns.length > 0) {
                 // filter out ignored files
-                results = results.filter((f) => {
-                    if (ignorePatterns.find((p) => {
-                        var r = new RegExp(p);
+                results = results.filter(f => {
+                    if (ignorePatterns.find(p => {
+                        const r = new RegExp(p);
                         return r.test(f.filename);
                     })) {
                         return false;
@@ -76,13 +76,13 @@ exports.changedFiles = changedFiles;
 function getDiffPaths(gh, ctx) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
-            if (ctx.payload.pull_request == undefined) {
-                throw new Error("missing payload pull request context");
+            if (ctx.payload.pull_request === undefined) {
+                throw new Error('missing payload pull request context');
             }
             const prMetadata = {
                 owner: ctx.repo.owner,
                 repo: ctx.repo.repo,
-                pull_number: ctx.payload.pull_request.number,
+                pull_number: ctx.payload.pull_request.number
             };
             /**
              * `data` is an array of items that look like this:
@@ -109,6 +109,7 @@ function getDiffPaths(gh, ctx) {
              */
             const { data } = yield gh.rest.pulls.listFiles(prMetadata);
             const diffPaths = data.map((item) => {
+                // eslint-disable-line
                 return new FileMod(item.filename, item.status, item.additions, item.deletions, item.patch);
             });
             resolve(diffPaths);
@@ -164,34 +165,40 @@ const changed_files_1 = __nccwpck_require__(6503);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const ghToken = core.getInput('github-token', { required: true, trimWhitespace: true });
+            const ghToken = core.getInput('github-token', {
+                required: true,
+                trimWhitespace: true
+            });
             const gh = github.getOctokit(ghToken);
             const allChangedFiles = yield (0, changed_files_1.getDiffPaths)(gh, github.context);
-            const separator = core.getInput('separator', { required: true, trimWhitespace: false });
-            if (separator.length == 0) {
-                core.setFailed("`separator` field must be non-empty!");
+            const separator = core.getInput('separator', {
+                required: true,
+                trimWhitespace: false
+            });
+            if (separator.length === 0) {
+                core.setFailed('`separator` field must be non-empty!');
                 return;
             }
-            const onlyFocusPatterns = core.getMultilineInput("only_file_patterns", { required: false, trimWhitespace: true });
-            const ignorePatterns = core.getMultilineInput("ignore_file_patterns", { required: false, trimWhitespace: true });
-            const filterByStatus = core.getMultilineInput("filter_by_status", { required: false, trimWhitespace: true });
+            const onlyFocusPatterns = core.getMultilineInput('only_file_patterns', { required: false, trimWhitespace: true });
+            const ignorePatterns = core.getMultilineInput('ignore_file_patterns', { required: false, trimWhitespace: true });
+            const filterByStatus = core.getMultilineInput('filter_by_status', { required: false, trimWhitespace: true });
             core.debug(`inputs: separator=${separator} filter_by_status=${filterByStatus} only_file_patterns=${onlyFocusPatterns.join(',')} ignore_file_patterns=${ignorePatterns.join(',')}`);
             const results = yield (0, changed_files_1.changedFiles)(onlyFocusPatterns, ignorePatterns, filterByStatus, allChangedFiles);
             core.debug(`results: ${results.join(',')}`);
-            core.setOutput('any_changed', (results.length > 0) + "");
-            core.setOutput("all_changed_files", (0, changed_files_1.fileModsToPaths)(results).join(separator));
+            core.setOutput('any_changed', new Boolean(results.length > 0).toString());
+            core.setOutput('all_changed_files', (0, changed_files_1.fileModsToPaths)(results).join(separator));
             // only added
             const onlyAddedFiles = (0, changed_files_1.fileModsByStatus)(results, 'added');
-            core.setOutput("only_added", (0, changed_files_1.fileModsToPaths)(onlyAddedFiles).join(separator));
-            core.setOutput('any_added', (onlyAddedFiles.length > 0) + "");
+            core.setOutput('only_added', (0, changed_files_1.fileModsToPaths)(onlyAddedFiles).join(separator));
+            core.setOutput('any_added', new Boolean(onlyAddedFiles.length > 0).toString());
             // only modified
             const onlyModifiedFiles = (0, changed_files_1.fileModsByStatus)(results, 'modified');
-            core.setOutput("only_modified", (0, changed_files_1.fileModsToPaths)(onlyModifiedFiles).join(separator));
-            core.setOutput('any_modified', (onlyModifiedFiles.length > 0) + "");
+            core.setOutput('only_modified', (0, changed_files_1.fileModsToPaths)(onlyModifiedFiles).join(separator));
+            core.setOutput('any_modified', new Boolean(onlyModifiedFiles.length > 0).toString());
             // only deleted
             const onlyDeletedFiles = (0, changed_files_1.fileModsByStatus)(results, 'deleted');
-            core.setOutput("only_deleted", (0, changed_files_1.fileModsToPaths)(onlyDeletedFiles).join(separator));
-            core.setOutput('any_deleted', (onlyDeletedFiles.length > 0) + "");
+            core.setOutput('only_deleted', (0, changed_files_1.fileModsToPaths)(onlyDeletedFiles).join(separator));
+            core.setOutput('any_deleted', new Boolean(onlyDeletedFiles.length > 0).toString());
         }
         catch (error) {
             if (error instanceof Error)
