@@ -1,4 +1,4 @@
-name: 'Changed Files'
+name: 'Faster Changed Files Action'
 description: 'A fast way to get changed files github action'
 inputs:
   github-token:
