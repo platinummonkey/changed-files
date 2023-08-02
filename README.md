@@ -12,20 +12,25 @@ It would be expected to use this action for other downstream conditional steps t
 ### `github-token`
 
 **Required** The github token, for the most part you can just use `${{ secrets.GITHUB_TOKEN }}`.
+
 **Example**
 `${{ secrets.GITHUB_TOKEN }}`
 
 ### `separator`
 
 **Required** The separator to use on output.
+
 **Default** `,`
+
 **Example**
 `${{ secrets.GITHUB_TOKEN }}`
 
 ### `ignore_file_patterns`
 
 **Optional** A newline separated list of regex paths to ignore.
+
 **Default** ``
+
 **Example**
 ```
 foo/.*\.json
@@ -35,7 +40,9 @@ bar/.*\.ini
 ### `only_file_patterns`
 
 **Optional** A newline separated list of regex paths to only consider. This is applied before `ignore_file_patterns`.
+
 **Default** ``
+
 **Example**
 ```
 foo/.*\.json
@@ -45,7 +52,9 @@ bar/.*\.ini
 ### `filter_by_status`
 
 **Optional** A newline separated list of status to filter by, options are: `added,removed,modified,renamed,copied,changed,unchanged`. This is applied before `ignore_file_patterns`.
+
 **Default** `` - meaning all.
+
 **Example**
 ```
 added
