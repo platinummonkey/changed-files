@@ -27,25 +27,31 @@ It would be expected to use this action for other downstream conditional steps t
 **Optional** A newline separated list of regex paths to ignore.
 **Default** ``
 **Example**
+```
 foo/.*\.json
 bar/.*\.ini
+```
 
 ### `only_file_patterns`
 
 **Optional** A newline separated list of regex paths to only consider. This is applied before `ignore_file_patterns`.
 **Default** ``
 **Example**
+```
 foo/.*\.json
 bar/.*\.ini
+```
 
 ### `filter_by_status`
 
 **Optional** A newline separated list of status to filter by, options are: `added,removed,modified,renamed,copied,changed,unchanged`. This is applied before `ignore_file_patterns`.
 **Default** `` - meaning all.
 **Example**
+```
 added
 copied
 renamed
+```
 
 ## Outputs
 
@@ -119,6 +125,14 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           separator: ','
+          ignore_files_pattern: |
+            foo/.*\.json
+          only_files_pattern: |
+            foo/bar.*
+          filter_by_status: |
+            added
+            modified
+            deleted
       - name: output results
         shell: bash
         env:
