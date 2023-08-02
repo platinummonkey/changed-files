@@ -1,0 +1,39 @@
+name: 'Changed Files'
+description: 'A fast way to get changed files github action'
+inputs:
+  ignore_file_patterns:
+    description: "a newline separated list of regex paths to ignore"
+    required: false
+    default: ''
+  only_file_patterns:
+    description: "a newline separated list of regex paths to only consider"
+    required: false
+    default: ''
+  filter_by_status:
+    description: "a newline separated list of status to filter by, options are: added,removed,modified,renamed,copied,changed,unchanged"
+    required: false
+    default: ''
+  separator:
+    description: "the separator to use on output"
+    required: false
+    default: ','
+outputs:
+  all_changed_files:
+    description: "a list of changed file paths using the separator"
+  only_deleted:
+    description: "a list of  only deleted file paths using the separator"
+  only_modified:
+    description: "a list of  only modified file paths using the separator"
+  only_added:
+    description: "a list of  only added file paths using the separator"
+  any_changed:
+    description: '"true" if any files were modified'
+  any_added:
+    description: '"true" if any files were marked with "added" status'
+  any_modified:
+    description: '"true" if any files were marked with "modified" status'
+  any_deleted:
+    description: '"true" if any files were marked with "deleted" status'
+runs:
+  using: 'node16'
+  main: 'dist/index.js'
