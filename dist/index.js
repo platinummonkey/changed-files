@@ -16,7 +16,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getDiffPaths = exports.changedFiles = exports.fileModsToPaths = exports.fileModsByStatus = exports.FileMod = void 0;
+exports.changedFiles = exports.fileModsToPaths = exports.fileModsByStatus = exports.FileMod = void 0;
 class FileMod {
     constructor(filename, status, additions, deletions, patch) {
         this.filename = filename;
@@ -73,50 +73,6 @@ function changedFiles(onlyFocusPatterns, ignorePatterns, filterByStatus, allChan
     });
 }
 exports.changedFiles = changedFiles;
-function getDiffPaths(gh, ctx) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
-            if (ctx.payload.pull_request === undefined) {
-                throw new Error('missing payload pull request context');
-            }
-            const prMetadata = {
-                owner: ctx.repo.owner,
-                repo: ctx.repo.repo,
-                pull_number: ctx.payload.pull_request.number
-            };
-            /**
-             * `data` is an array of items that look like this:
-             * {
-             *
-             *   filename: 'foo/bar/baz.json',
-             *   status: 'modified',  // added,removed,modified,renamed,copied,changed,unchanged
-             *   additions: 14,
-             *   deletions: 14,
-             *   changes: 14,
-             *   blob_url: "..."
-             *   contents_url: "...",
-             *   raw_url: "...",
-             *   patch: '@@ -1,2 +1,2 @@\n' +
-             *    ' "foo": "bar",\n' +
-             *    '-"hello": "world"\n' +
-             *    '+"hello": "people"'
-             * }
-             *
-             *
-             * listFiles(params?: (RequestParameters & Omit<{ owner: string; repo: string; pull_number: number; } & { per_page?: number | undefined; page?: number | undefined; }, "baseUrl" | "headers" | "mediaType">) | undefined):
-             *  Promise<OctokitResponse<{ sha: string; filename: string; status: "added" | "removed" | "modified" | "renamed" | "copied" | "changed" | "unchanged"; additions: number; deletions: number; changes: number; blob_url: string; raw_url: string; contents_url: string; patch?: string | undefined; previous_filename?: string | undefined; }[], 200>>
-             *
-             */
-            const { data } = yield gh.rest.pulls.listFiles(prMetadata);
-            const diffPaths = data.map((item) => {
-                // eslint-disable-line
-                return new FileMod(item.filename, item.status, item.additions, item.deletions, item.patch);
-            });
-            resolve(diffPaths);
-        }));
-    });
-}
-exports.getDiffPaths = getDiffPaths;
 
 
 /***/ }),
@@ -159,10 +115,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.getDiffPaths = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const changed_files_1 = __nccwpck_require__(6503);
 function run() {
+    var _a;
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const ghToken = core.getInput('github-token', {
@@ -170,7 +128,9 @@ function run() {
                 trimWhitespace: true
             });
             const gh = github.getOctokit(ghToken);
-            const allChangedFiles = yield (0, changed_files_1.getDiffPaths)(gh, github.context);
+            core.debug(`repo_owner=${github.context.repo.owner} repo=${github.context.repo} pull_number=${(_a = github.context.payload.pull_request) === null || _a === void 0 ? void 0 : _a.number}`);
+            const allChangedFiles = yield getDiffPaths(gh, github.context);
+            core.debug(`all_changed_files=${allChangedFiles}`);
             const separator = core.getInput('separator', {
                 required: true,
                 trimWhitespace: false
@@ -206,6 +166,50 @@ function run() {
         }
     });
 }
+function getDiffPaths(gh, ctx) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return new Promise((resolve) => __awaiter(this, void 0, void 0, function* () {
+            if (ctx.payload.pull_request === undefined) {
+                throw new Error('missing payload pull request context');
+            }
+            const prMetadata = {
+                owner: ctx.repo.owner,
+                repo: ctx.repo.repo,
+                pull_number: ctx.payload.pull_request.number
+            };
+            /**
+             * `data` is an array of items that look like this:
+             * {
+             *
+             *   filename: 'foo/bar/baz.json',
+             *   status: 'modified',  // added,removed,modified,renamed,copied,changed,unchanged
+             *   additions: 14,
+             *   deletions: 14,
+             *   changes: 14,
+             *   blob_url: "..."
+             *   contents_url: "...",
+             *   raw_url: "...",
+             *   patch: '@@ -1,2 +1,2 @@\n' +
+             *    ' "foo": "bar",\n' +
+             *    '-"hello": "world"\n' +
+             *    '+"hello": "people"'
+             * }
+             *
+             *
+             * listFiles(params?: (RequestParameters & Omit<{ owner: string; repo: string; pull_number: number; } & { per_page?: number | undefined; page?: number | undefined; }, "baseUrl" | "headers" | "mediaType">) | undefined):
+             *  Promise<OctokitResponse<{ sha: string; filename: string; status: "added" | "removed" | "modified" | "renamed" | "copied" | "changed" | "unchanged"; additions: number; deletions: number; changes: number; blob_url: string; raw_url: string; contents_url: string; patch?: string | undefined; previous_filename?: string | undefined; }[], 200>>
+             *
+             */
+            const { data } = yield gh.rest.pulls.listFiles(prMetadata);
+            const diffPaths = data.map((item) => {
+                // eslint-disable-line
+                return new changed_files_1.FileMod(item.filename, item.status, item.additions, item.deletions, item.patch);
+            });
+            resolve(diffPaths);
+        }));
+    });
+}
+exports.getDiffPaths = getDiffPaths;
 run();
 
 
