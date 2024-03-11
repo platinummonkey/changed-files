@@ -120,8 +120,8 @@ const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const changed_files_1 = __nccwpck_require__(6503);
 function run() {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
+        var _a;
         try {
             const ghToken = core.getInput('github-token', {
                 required: true,
