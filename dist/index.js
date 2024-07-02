@@ -16,7 +16,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.changedFiles = exports.fileModsToPaths = exports.fileModsByStatus = exports.FileMod = void 0;
+exports.FileMod = void 0;
+exports.fileModsByStatus = fileModsByStatus;
+exports.fileModsToPaths = fileModsToPaths;
+exports.changedFiles = changedFiles;
 class FileMod {
     constructor(filename, status, additions, deletions, patch) {
         this.filename = filename;
@@ -30,11 +33,9 @@ exports.FileMod = FileMod;
 function fileModsByStatus(files, status) {
     return files.filter(f => f.status === status);
 }
-exports.fileModsByStatus = fileModsByStatus;
 function fileModsToPaths(files) {
     return files.map(f => f.filename);
 }
-exports.fileModsToPaths = fileModsToPaths;
 function changedFiles(onlyFocusPatterns, ignorePatterns, filterByStatus, allChangedFiles) {
     return __awaiter(this, void 0, void 0, function* () {
         return new Promise(resolve => {
@@ -72,7 +73,6 @@ function changedFiles(onlyFocusPatterns, ignorePatterns, filterByStatus, allChan
         });
     });
 }
-exports.changedFiles = changedFiles;
 
 
 /***/ }),
@@ -115,7 +115,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getDiffPaths = void 0;
+exports.getDiffPaths = getDiffPaths;
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const changed_files_1 = __nccwpck_require__(6503);
@@ -209,7 +209,6 @@ function getDiffPaths(gh, ctx) {
         }));
     });
 }
-exports.getDiffPaths = getDiffPaths;
 run();
 
 
