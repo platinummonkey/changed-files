@@ -19,17 +19,16 @@ const compat = new FlatCompat({
 export default defineConfig([
     globalIgnores(["**/dist/", "**/lib/", "**/node_modules/", "**/jest.config.js"]),
     {
+        files: ["src/**/*.ts", "src/**/*.tsx"],
         extends: compat.extends(),
 
         plugins: {
-            jest,
             "@typescript-eslint": typescriptEslint,
         },
 
         languageOptions: {
             globals: {
                 ...globals.node,
-                ...jest.environments.globals.globals,
             },
 
             parser: tsParser,
@@ -63,7 +62,6 @@ export default defineConfig([
                 allowExpressions: true,
             }],
 
-            "@typescript-eslint/func-call-spacing": ["error", "never"],
             "@typescript-eslint/no-array-constructor": "error",
             "@typescript-eslint/no-empty-interface": "error",
             "@typescript-eslint/no-explicit-any": "off",
@@ -73,23 +71,36 @@ export default defineConfig([
             "@typescript-eslint/no-misused-new": "error",
             "@typescript-eslint/no-namespace": "error",
             "@typescript-eslint/no-non-null-assertion": "warn",
-            "@typescript-eslint/no-unnecessary-qualifier": "error",
             "@typescript-eslint/no-unnecessary-type-assertion": "error",
-            "@typescript-eslint/no-useless-constructor": "error",
-            "@typescript-eslint/no-var-requires": "error",
             "@typescript-eslint/prefer-for-of": "warn",
-            "@typescript-eslint/prefer-function-type": "warn",
             "@typescript-eslint/prefer-includes": "error",
             "@typescript-eslint/prefer-string-starts-ends-with": "error",
             "@typescript-eslint/promise-function-async": "error",
             "@typescript-eslint/require-array-sort-compare": "error",
             "@typescript-eslint/restrict-plus-operands": "error",
             semi: "off",
-            "@typescript-eslint/semi": ["error", "never"],
-            "@typescript-eslint/type-annotation-spacing": "error",
             "@typescript-eslint/unbound-method": "error",
             "eslint-comments/no-unlimited-disable": "off",
             "eslint-comments/no-unused-disable": "off",
+        },
+    },
+    {
+        files: ["**/*.test.ts", "**/*.test.tsx", "__tests__/**/*.ts"],
+        plugins: {
+            jest,
+            "@typescript-eslint": typescriptEslint,
+        },
+        languageOptions: {
+            globals: {
+                ...globals.node,
+                ...jest.environments.globals.globals,
+            },
+            parser: tsParser,
+            ecmaVersion: 9,
+            sourceType: "module",
+        },
+        rules: {
+            "@typescript-eslint/no-explicit-any": "off",
         },
     },
 ]);
