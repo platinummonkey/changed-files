@@ -1,7 +1,6 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
-import {Context} from '@actions/github/lib/context'
-import {Api} from '@octokit/plugin-rest-endpoint-methods/dist-types/types' // eslint-disable-line
+import {Api} from '@octokit/plugin-rest-endpoint-methods'
 import {
   FileMod,
   changedFiles,
@@ -102,7 +101,7 @@ async function run(): Promise<void> {
   }
 }
 
-export async function getDiffPaths(gh: Api, ctx: Context): Promise<FileMod[]> {
+export async function getDiffPaths(gh: Api, ctx: typeof github.context): Promise<FileMod[]> {
   return new Promise(async resolve => {
     if (ctx.payload.pull_request === undefined) {
       throw new Error('missing payload pull request context')
