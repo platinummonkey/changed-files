@@ -2,10 +2,10 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import {Api} from '@octokit/plugin-rest-endpoint-methods'
 import {
-  FileMod,
   changedFiles,
-  fileModsToPaths,
-  fileModsByStatus
+  FileMod,
+  fileModsByStatus,
+  fileModsToPaths
 } from './changed-files'
 
 async function run(): Promise<void> {
@@ -101,7 +101,10 @@ async function run(): Promise<void> {
   }
 }
 
-export async function getDiffPaths(gh: Api, ctx: typeof github.context): Promise<FileMod[]> {
+export async function getDiffPaths(
+  gh: Api,
+  ctx: typeof github.context
+): Promise<FileMod[]> {
   return new Promise(async resolve => {
     if (ctx.payload.pull_request === undefined) {
       throw new Error('missing payload pull request context')
@@ -139,7 +142,6 @@ export async function getDiffPaths(gh: Api, ctx: typeof github.context): Promise
     const {data} = await gh.rest.pulls.listFiles(prMetadata)
 
     const diffPaths: FileMod[] = data.map((item: any) => {
-      // eslint-disable-line
       return new FileMod(
         item.filename,
         item.status,

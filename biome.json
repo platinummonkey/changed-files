@@ -1,0 +1,81 @@
+{
+  "$schema": "https://biomejs.dev/schemas/2.4.16/schema.json",
+  "vcs": { "enabled": true, "clientKind": "git", "useIgnoreFile": true },
+  "files": {
+    "includes": ["**", "!!**/dist"]
+  },
+  "formatter": {
+    "enabled": true,
+    "indentStyle": "space",
+    "indentWidth": 2,
+    "lineEnding": "lf",
+    "lineWidth": 80,
+    "includes": ["**", "!**/dist/", "!**/lib/", "!**/node_modules/"]
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded",
+      "trailingCommas": "none",
+      "arrowParentheses": "asNeeded",
+      "bracketSpacing": false
+    }
+  },
+  "linter": {
+    "enabled": true,
+    "rules": { "recommended": false },
+    "includes": [
+      "**",
+      "!**/dist/",
+      "!**/lib/",
+      "!**/node_modules/",
+      "!**/jest.config.js"
+    ]
+  },
+  "overrides": [
+    {
+      "includes": ["src/**/*.ts", "src/**/*.tsx"],
+      "linter": {
+        "rules": {
+          "complexity": {
+            "noStaticOnlyClass": "error"
+          },
+          "correctness": {
+            "noUnusedVariables": "error"
+          },
+          "style": {
+            "noCommonJs": "error",
+            "noInferrableTypes": "error",
+            "noNamespace": "error",
+            "noNonNullAssertion": "warn",
+            "useArrayLiterals": "error",
+            "useConsistentArrayType": "error",
+            "useConsistentMemberAccessibility": {
+              "level": "error",
+              "options": { "accessibility": "noPublic" }
+            },
+            "useForOf": "warn"
+          },
+          "suspicious": {
+            "noEmptyInterface": "error",
+            "noExplicitAny": "off",
+            "noMisleadingInstantiator": "error",
+            "noTsIgnore": "error"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.test.ts", "**/*.test.tsx", "__tests__/**/*.ts"],
+      "linter": {
+        "rules": {
+          "suspicious": { "noExplicitAny": "off" }
+        }
+      }
+    }
+  ],
+  "assist": {
+    "enabled": true,
+    "actions": { "source": { "organizeImports": "on" } }
+  }
+}

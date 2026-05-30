@@ -36437,7 +36437,6 @@ async function getDiffPaths(gh, ctx) {
          */
         const { data } = await gh.rest.pulls.listFiles(prMetadata);
         const diffPaths = data.map((item) => {
-            // eslint-disable-line
             return new FileMod(item.filename, item.status, item.additions, item.deletions, item.patch);
         });
         resolve(diffPaths);
