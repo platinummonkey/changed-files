@@ -5,12 +5,13 @@
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
-    "format": "prettier --write '**/*.ts'",
-    "format-check": "prettier --check '**/*.ts'",
-    "lint": "eslint --ext src/**/*.ts",
+    "format": "biome format --write .",
+    "format-check": "biome format .",
+    "lint": "biome lint .",
+    "check": "biome check .",
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+    "all": "npm run build && npm run check && npm run package && npm test"
   },
   "repository": {
     "type": "git",
@@ -28,20 +29,11 @@
     "@actions/github": "^9.1.1"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3.3.5",
-    "@eslint/js": "^9.39.4",
+    "@biomejs/biome": "^2.4.16",
     "@types/node": "^25.6.2",
-    "@typescript-eslint/eslint-plugin": "^8.59.2",
-    "@typescript-eslint/parser": "^8.58.2",
     "@vercel/ncc": "^0.38.4",
-    "eslint": "^9.39.4",
-    "eslint-plugin-github": "^6.0.0",
-    "eslint-plugin-jest": "^29.15.2",
-    "eslint-plugin-prettier": "^5.5.5",
-    "globals": "^17.6.0",
     "jest": "^30.4.2",
     "js-yaml": "^4.1.1",
-    "prettier": "^3.8.3",
     "ts-jest": "^29.4.9",
     "typescript": "^6.0.3"
   }

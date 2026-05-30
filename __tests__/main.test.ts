@@ -1,10 +1,10 @@
-import {
-  FileMod,
-  changedFiles,
-  fileModsToPaths,
-  fileModsByStatus
-} from '../src/changed-files'
 import {expect, test} from '@jest/globals'
+import {
+  changedFiles,
+  FileMod,
+  fileModsByStatus,
+  fileModsToPaths
+} from '../src/changed-files'
 
 test('test FileMod[] to string[] for filenames', async () => {
   const files: FileMod[] = [
