@@ -30,11 +30,11 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.16",
-    "@types/node": "^25.6.2",
+    "@types/node": "^25.9.1",
     "@vercel/ncc": "^0.38.4",
     "jest": "^30.4.2",
     "js-yaml": "^4.1.1",
-    "ts-jest": "^29.4.9",
+    "ts-jest": "^29.4.11",
     "typescript": "^6.0.3"
   }
 }
