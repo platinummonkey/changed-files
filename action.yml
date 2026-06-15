@@ -41,5 +41,5 @@ outputs:
   any_deleted:
     description: '"true" if any files were marked with "deleted" status'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
