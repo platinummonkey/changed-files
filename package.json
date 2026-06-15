@@ -29,9 +29,9 @@
     "@actions/github": "^9.1.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.16",
-    "@types/node": "^25.9.2",
-    "@vercel/ncc": "^0.38.4",
+    "@biomejs/biome": "^2.5.0",
+    "@types/node": "^25.9.3",
+    "@vercel/ncc": "^0.44.0",
     "jest": "^30.4.2",
     "js-yaml": "^4.2.0",
     "ts-jest": "^29.4.11",
