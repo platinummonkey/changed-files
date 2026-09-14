@@ -29,10 +29,10 @@
     "@actions/github": "^9.1.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.12",
-    "@swc/core": "^1.16.1",
+    "@biomejs/biome": "^2.5.13",
+    "@swc/core": "^1.16.2",
     "@swc/jest": "^0.2.39",
-    "@types/node": "^26.4.1",
+    "@types/node": "^26.5.1",
     "@vercel/ncc": "^0.45.0",
     "jest": "^30.5.1",
     "js-yaml": "^5.4.1",
