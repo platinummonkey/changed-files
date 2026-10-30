@@ -29,8 +29,8 @@
     "@actions/github": "^9.1.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.5.15",
-    "@swc/core": "^1.16.18",
+    "@biomejs/biome": "^2.6.2",
+    "@swc/core": "^1.16.20",
     "@swc/jest": "^0.2.39",
     "@types/node": "^26.6.5",
     "@vercel/ncc": "^0.45.0",
